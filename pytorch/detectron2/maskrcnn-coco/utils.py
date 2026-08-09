@@ -69,7 +69,7 @@ class RequestParser:
         image_info = image_meta["image"]
         h, w, _ = np.int0([image_info["height"], image_info["width"], image_info["channel"]])
         image_data = image_data.split(b'\r\n\r\n')
-    image_data = [ele for ele in image_data if ele != b'' and b'form-data' not in ele and b'stream' not in ele]
+        image_data = [ele for ele in image_data if ele != b'' and b'form-data' not in ele and b'stream' not in ele]
         assert len(image_data) == 1, "Length of image data data contents should be 1."
         image_data = image_data[0].rsplit(b'\r\n', 1)[0] # cause' there are many '\r\n' in image data, so we just remove the last
         flag = False
