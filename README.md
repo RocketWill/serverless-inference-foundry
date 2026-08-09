@@ -2,7 +2,7 @@
 
 A collection of GPU-backed computer vision functions packaged for independent deployment with Nuclio. Each function owns model initialization, preprocessing, inference, postprocessing, and conversion to a shared annotation-oriented response contract.
 
-The companion [auto-annotation orchestrator](https://github.com/RocketWill/lkdi-auto-anno) discovers these functions, invokes them for individual frames or queued tasks, and writes normalized results back to an annotation platform.
+The companion [Annotation Inference Orchestrator](https://github.com/RocketWill/annotation-inference-orchestrator) discovers these functions, invokes them for individual frames or queued tasks, and writes normalized results back to an annotation platform.
 
 ![Nuclio inference architecture](docs/inference-architecture.svg)
 
