@@ -1,4 +1,4 @@
-# Nuclio Inference Functions
+# Vision Function Foundry
 
 A collection of GPU-backed computer vision functions packaged for independent deployment with Nuclio. Each function owns model initialization, preprocessing, inference, postprocessing, and conversion to a shared annotation-oriented response contract.
 
