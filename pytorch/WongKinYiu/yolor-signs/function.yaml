@@ -1,0 +1,59 @@
+metadata:
+  name: pth-yolor-roadsign
+  namespace: lkdi
+  annotations:
+    name: 路牌检测
+    type: detector
+    shape: |
+      ["rectangle"]
+    framework: pytorch
+    dimension: 2d
+    spec: |
+      [
+        {"id": 1, "name": "低限速路牌"},
+        {"id": 2, "name": "矢量限制轴重标志牌"},
+        {"id": 3, "name": "限高标志牌"},
+        {"id": 4, "name": "限宽标志牌"},
+        {"id": 5, "name": "高限速标志牌"},
+        {"id": 6, "name": "限重标志牌"},
+        {"id": 7, "name": "解除限速标志牌"},
+        {"id": 8, "name": "蓝色指示标志牌"},
+        {"id": 9, "name": "黄色三角形警告标志牌"},
+        {"id": 10, "name": "圆形禁止标志牌"},
+        {"id": 11, "name": "特殊类型"}
+      ]
+
+spec:
+  description: 适用国标路牌检测
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 60s
+  env:
+    - name: PYTHONPATH
+      value: "/yolor"
+  build:
+    image: lkdi/pth.yolor.roadsign
+    baseImage: willcy1006/lkdi-pytorch1.10_cu113:yolor
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3

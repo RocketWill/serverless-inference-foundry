@@ -1,0 +1,51 @@
+metadata:
+  name: pth-openpcdet-kitti
+  namespace: lkdi
+  annotations:
+    name: 点云目标检测(KITTI数据集)
+    type: detector
+    shape: |
+      ["cuboid"]
+    dimension: 3d
+    framework: pytorch
+    spec: |
+      [
+        { "id": 1, "name": "car (小汽车)" },
+        { "id": 2, "name": "pedestrian (行人)" },
+        { "id": 3, "name": "cyclist (骑自行车的人)" }
+      ]
+
+spec:
+  description: "3D点云目标检测"
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 60s
+  env:
+    - name: PYTHONPATH
+      value: "/app/OpenPCDet:/app/OpenPCDet/tools"
+  build:
+    image: lkdi/pth.openpcdet.kitti
+    baseImage: willcy1006/lkdi-pytorch110_cu113:openpcdet
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3

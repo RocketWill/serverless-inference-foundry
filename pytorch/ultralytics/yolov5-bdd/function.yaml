@@ -1,0 +1,57 @@
+metadata:
+  name: pth-yolov5m-bdd
+  namespace: lkdi
+  annotations:
+    name: 目标检测(BDD数据集)
+    type: detector
+    shape: |
+      ["rectangle"]
+    framework: pytorch
+    dimension: 2d
+    spec: |
+      [
+        { "id": 1, "name": "person (人)" },
+        { "id": 2, "name": "rider (骑手)" },
+        { "id": 3, "name": "car (小汽车)" },
+        { "id": 4, "name": "bus (公交车)" },
+        { "id": 5, "name": "truck (卡车)" },
+        { "id": 6, "name": "bike (自行车)" },
+        { "id": 7, "name": "motor (摩托车)" },
+        { "id": 8, "name": "traffic_light (信号灯)" },
+        { "id": 9, "name": "traffic_sign (交通号志)" },
+        { "id": 10, "name": "train (火车)" }
+      ]
+
+spec:
+  description: 适用平视交通场景
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 60s
+  env:
+    - name: PYTHONPATH
+      value: "/app/yolov5"
+  build:
+    image: lkdi/pth.yolov5m.bdd
+    baseImage: willcy1006/lkdi-pytorch110_cu113:yolov5
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3

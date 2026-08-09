@@ -1,0 +1,49 @@
+metadata:
+  name: pth-yolov5l-d2-kptrcnn-r101fpn-boxyv2
+  namespace: lkdi
+  annotations:
+    name: "L-Shape 检测 (新版L型框)"
+    type: detector
+    shape: |
+      ["New Lshape"]
+    framework: pytorch
+    dimension: 2d
+    spec: |
+      [
+        { "id": 1, "name": "vehicle (车辆)" }
+      ]
+
+spec:
+  description: "适用高速平视场景"
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 120s
+  env:
+    - name: PYTHONPATH
+      value: /yolov5
+  build:
+    image: lkdi/pth.yolov5l.d2.newlshape.boxy
+    baseImage: willcy1006/lkdi-pytorch110_cu113:d2_yolov5
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3

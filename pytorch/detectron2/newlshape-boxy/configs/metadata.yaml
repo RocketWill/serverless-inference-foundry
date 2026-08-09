@@ -1,0 +1,15 @@
+obj_names: ['side', 'center', 'side_cut']
+keypoint_names: ['rear_p1', 'rear_p2', 'side_p1', 'side_p2']
+keypoint_connection_rules: [['rear_p1', 'rear_p2', [255, 0, 0]],  # color: (r,g,b)
+                            ['rear_p2', 'side_p2', [0, 255, 0]],
+                            ['side_p1', 'side_p2', [0, 0, 255]]]
+keypoint_flip_map: []
+thing_colors: [[255,255,255]]
+stuff_colors: [[ 255, 255, 255]]
+# bbox_padding: 0.1
+
+images_root: "/mnt/h/bosch-boxy/unzip"
+train_anno_file: "/workspace/project/boxy_labels_train.json"
+val_anno_file: "/workspace/project/boxy_labels_valid.json"
+img_hw: [1028, 1232]
+anno_root: "/mnt/h/bosch-boxy/crop"

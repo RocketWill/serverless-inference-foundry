@@ -1,0 +1,49 @@
+metadata:
+  name: pth-laneatt-r34-tusimple
+  namespace: lkdi
+  annotations:
+    name: "车道线检测"
+    type: detector
+    shape: |
+      ["polyline"]
+    framework: pytorch
+    dimension: 2d
+    spec: |
+      [
+        { "id": 1, "name": "lane (车道线)" }
+      ]
+
+spec:
+  description: "车道线检测，适用接近Tusimple数据集场景"
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 60s
+  env:
+    - name: PYTHONPATH
+      value: /app
+  build:
+    image: lkdi/pth.laneatt.polyline.tusimple
+    baseImage: willcy1006/lkdi-lane-det:base
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3

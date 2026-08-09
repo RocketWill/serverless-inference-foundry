@@ -1,0 +1,58 @@
+metadata:
+  name: pth-yolov5l-wheel
+  namespace: lkdi
+  annotations:
+    name: 车轮目标检测
+    type: detector
+    shape: |
+      [
+        "ellipse",
+        "rectangle"
+      ]
+    framework: pytorch
+    dimension: 2d
+    spec: |
+      [
+        { "id": 1, "name": "wheel (车轮)" },
+        { "id": 2, "name": "person (人)" },
+        { "id": 3, "name": "car (小汽车)" },
+        { "id": 4, "name": "bus (公交车)" },
+        { "id": 5, "name": "truck (卡车)" },
+        { "id": 6, "name": "van (小货车)" },
+        { "id": 7, "name": "limousine (豪华轿车)" },
+        { "id": 8, "name": "taxi (出租车)" }
+      ]
+spec:
+  description: 支持车轮(椭圆)及一般车辆(矩形)标注
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 60s
+  env:
+    - name: PYTHONPATH
+      value: ":/app/yolov5"
+  build:
+    image: lkdi/pth.yolov5l.wheel
+    baseImage: willcy1006/lkdi-pytorch110_cu113:yolov5
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3

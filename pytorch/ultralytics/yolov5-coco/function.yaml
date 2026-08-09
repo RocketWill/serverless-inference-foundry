@@ -1,0 +1,128 @@
+metadata:
+  name: pth-yolov5l-coco
+  namespace: lkdi
+  annotations:
+    name: 目标检测(COCO数据集)
+    type: detector
+    shape: |
+      ["rectangle"]
+    framework: pytorch
+    dimension: 2d
+    spec: |
+      [
+        { "id": 1, "name": "person (人)" },
+        { "id": 2, "name": "bicycle (自行车)" },
+        { "id": 3, "name": "car (小汽车)" },
+        { "id": 4, "name": "motorcycle (摩托车)" },
+        { "id": 5, "name": "airplane (飞机)" },
+        { "id": 6, "name": "bus (公交)" },
+        { "id": 7, "name": "train (火车)" },
+        { "id": 8, "name": "truck (卡车)" },
+        { "id": 9, "name": "boat (船)" },
+        { "id": 10, "name": "traffic_light (信号灯)" },
+        { "id": 11, "name": "firehydrant (灭火器)" },
+        { "id": 12, "name": "stop_sign (停止标志)" },
+        { "id": 13, "name": "parking_meter (停车收费表)" },
+        { "id": 14, "name": "bench (公园长椅)" },
+        { "id": 15, "name": "bird (鸟)" },
+        { "id": 16, "name": "cat (猫🐱)" },
+        { "id": 17, "name": "dog (狗🐶)" },
+        { "id": 18, "name": "horse (马)" },
+        { "id": 19, "name": "sheep (羊)" },
+        { "id": 20, "name": "cow (牛)" },
+        { "id": 21, "name": "elephant (大象)" },
+        { "id": 22, "name": "bear (熊)" },
+        { "id": 23, "name": "zebra (斑马)" },
+        { "id": 24, "name": "giraffe (长颈鹿)" },
+        { "id": 25, "name": "backpack (背包)" },
+        { "id": 26, "name": "umbrella (雨伞)" },
+        { "id": 27, "name": "handbag (手提包)" },
+        { "id": 28, "name": "tie (领带)" },
+        { "id": 29, "name": "suitcase (手提箱)" },
+        { "id": 30, "name": "frisbee (飞盘)" },
+        { "id": 31, "name": "skis (滑雪板双板)" },
+        { "id": 32, "name": "snowboard (滑雪板单板)" },
+        { "id": 33, "name": "sports_ball (运动球类)" },
+        { "id": 34, "name": "kite (风筝)" },
+        { "id": 35, "name": "baseball_bat (棒球棒)" },
+        { "id": 36, "name": "baseball_glove (棒球手套)" },
+        { "id": 37, "name": "skateboard (滑板)" },
+        { "id": 38, "name": "surfboard (冲浪板)" },
+        { "id": 39, "name": "tennis_racket (网球拍)" },
+        { "id": 40, "name": "bottle (水瓶)" },
+        { "id": 41, "name": "wine_glass (红酒杯)" },
+        { "id": 42, "name": "cup (杯子)" },
+        { "id": 43, "name": "fork (叉)" },
+        { "id": 44, "name": "knife (刀)" },
+        { "id": 45, "name": "spoon (勺子)" },
+        { "id": 46, "name": "bowl (碗)" },
+        { "id": 47, "name": "banana (香蕉)" },
+        { "id": 48, "name": "apple (苹果)" },
+        { "id": 49, "name": "sandwich (三明治)" },
+        { "id": 50, "name": "orange (橘子)" },
+        { "id": 51, "name": "broccoli (花菜)" },
+        { "id": 52, "name": "carrot (胡萝卜)" },
+        { "id": 53, "name": "hot_dog (热狗)" },
+        { "id": 54, "name": "pizza (披萨)" },
+        { "id": 55, "name": "donut (甜甜圈)" },
+        { "id": 56, "name": "cake (蛋糕)" },
+        { "id": 57, "name": "chair (椅子)" },
+        { "id": 58, "name": "couch (长椅)" },
+        { "id": 59, "name": "potted_plant (盆栽植物)" },
+        { "id": 60, "name": "bed (床)" },
+        { "id": 61, "name": "dining_table (餐桌)" },
+        { "id": 62, "name": "toilet (马桶)" },
+        { "id": 63, "name": "tv (电视)" },
+        { "id": 64, "name": "laptop (笔记本电脑)" },
+        { "id": 65, "name": "mouse (鼠标)" },
+        { "id": 66, "name": "remote (遥控器)" },
+        { "id": 67, "name": "keyboard (键盘)" },
+        { "id": 68, "name": "cell_phone (手机)" },
+        { "id": 69, "name": "microwave (微波炉)" },
+        { "id": 70, "name": "oven (烤箱)" },
+        { "id": 71, "name": "toaster (烤面包机)" },
+        { "id": 72, "name": "sink (水槽)" },
+        { "id": 73, "name": "refrigerator (冰箱)" },
+        { "id": 74, "name": "book (书)" },
+        { "id": 75, "name": "clock (时钟)" },
+        { "id": 76, "name": "vase (花瓶)" },
+        { "id": 77, "name": "scissors (剪刀)" },
+        { "id": 78, "name": "teddy_bear (泰迪熊)" },
+        { "id": 79, "name": "hair_drier (吹风机)" },
+        { "id": 80, "name": "toothbrush (牙刷)" }
+      ]
+
+spec:
+  description: 适用于一般场景且目标类别较多
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 60s
+  env:
+    - name: PYTHONPATH
+      value: "/app/yolov5"
+  build:
+    image: lkdi/pth.yolov5l.coco
+    baseImage: willcy1006/lkdi-pytorch110_cu113:yolov5
+    directives:
+      preCopy:
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      processorMountMode: volume
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3
